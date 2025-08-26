@@ -77,7 +77,7 @@
     <div class="comments-section" id="commentsSection">
       <h3>KOMENTAR PENGGUNA</h3>
       <div class="comments-list" id="commentsList">
-        <div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>
+        <div class="loading">Memuat komentar...</div>
       </div>
     </div>
     
@@ -93,7 +93,15 @@
   <!-- Elemen audio untuk efek suara -->
   <audio id="click-sound" src="klik.ogg" preload="auto"></audio>
 
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  
   <script>
+    const SUPABASE_URL = 'https://xuabynqevygezstitlco.supabase.co';
+    const SUPABASE_ANON_KEY = 'pk.eyJ1';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
     document.addEventListener('DOMContentLoaded', function() {
       const ratingNumbers = document.querySelectorAll('.rating-number');
       const selectedRating = document.getElementById('selectedRating');
@@ -110,7 +118,6 @@
       const totalComments = document.getElementById('totalComments');
       
       let currentRating = 0;
-      let allComments = JSON.parse(localStorage.getItem('allComments')) || [];
       
       function playClickSound() {
         if (clickSound) {
@@ -119,45 +126,62 @@
         }
       }
       
-      function loadComments() {
-        if (allComments.length > 0) {
-          commentsSection.style.display = 'block';
-          commentsList.innerHTML = '';
+      async function loadComments() {
+        try {
+          commentsList.innerHTML = '<div class="loading">Memuat komentar...</div>';
           
-          allComments.sort((a, b) => new Date(b.date) - new Date(a.date));
+          const { data, error } = await supabase
+            .from('ratings')
+            .select('*')
+            .order('created_at', { ascending: false });
           
-          allComments.forEach(comment => {
-            const commentItem = document.createElement('div');
-            commentItem.className = 'comment-item';
+          if (error) {
+            console.error('Error loading comments:', error);
+            commentsList.innerHTML = '<div class="error">Error memuat komentar.</div>';
+            return;
+          }
+          
+          if (data && data.length > 0) {
+            commentsSection.style.display = 'block';
+            commentsList.innerHTML = '';
             
-            const commentHeader = document.createElement('div');
-            commentHeader.className = 'comment-header';
+            data.forEach(comment => {
+              const commentItem = document.createElement('div');
+              commentItem.className = 'comment-item';
+              
+              const commentHeader = document.createElement('div');
+              commentHeader.className = 'comment-header';
+              
+              const commentRating = document.createElement('div');
+              commentRating.className = 'comment-rating';
+              commentRating.textContent = `⭐ ${comment.rating}/10`;
+              
+              const commentDate = document.createElement('div');
+              commentDate.className = 'comment-date';
+              commentDate.textContent = formatDate(comment.created_at);
+              
+              const commentText = document.createElement('div');
+              commentText.className = 'comment-text';
+              commentText.textContent = comment.comment || '(Tidak ada komentar)';
+              
+              commentHeader.appendChild(commentRating);
+              commentHeader.appendChild(commentDate);
+              commentItem.appendChild(commentHeader);
+              commentItem.appendChild(commentText);
+              
+              commentsList.appendChild(commentItem);
+            });
             
-            const commentRating = document.createElement('div');
-            commentRating.className = 'comment-rating';
-            commentRating.textContent = `⭐ ${comment.rating}/10`;
-            
-            const commentDate = document.createElement('div');
-            commentDate.className = 'comment-date';
-            commentDate.textContent = formatDate(comment.date);
-            
-            const commentText = document.createElement('div');
-            commentText.className = 'comment-text';
-            commentText.textContent = comment.text;
-            
-            commentHeader.appendChild(commentRating);
-            commentHeader.appendChild(commentDate);
-            commentItem.appendChild(commentHeader);
-            commentItem.appendChild(commentText);
-            
-            commentsList.appendChild(commentItem);
-          });
-        } else {
-          commentsSection.style.display = 'block';
-          commentsList.innerHTML = '<div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>';
+            updateStats(data);
+          } else {
+            commentsSection.style.display = 'block';
+            commentsList.innerHTML = '<div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>';
+            updateStats([]);
+          }
+        } catch (err) {
+          console.error('Error in loadComments:', err);
+          commentsList.innerHTML = '<div class="error">Error memuat komentar.</div>';
         }
-        
-        updateStats();
       }
       
       function formatDate(dateString) {
@@ -171,15 +195,15 @@
         });
       }
       
-      function updateStats() {
-        if (allComments.length > 0) {
-          const totalRating = allComments.reduce((sum, comment) => sum + parseInt(comment.rating), 0);
-          const avgRating = (totalRating / allComments.length).toFixed(1);
+      function updateStats(comments) {
+        if (comments.length > 0) {
+          const totalRating = comments.reduce((sum, comment) => sum + parseInt(comment.rating), 0);
+          const avgRating = (totalRating / comments.length).toFixed(1);
           averageRating.textContent = avgRating;
           
-          totalRatings.textContent = allComments.length;
+          totalRatings.textContent = comments.length;
           
-          const commentsWithText = allComments.filter(comment => comment.text.trim() !== '').length;
+          const commentsWithText = comments.filter(comment => comment.comment && comment.comment.trim() !== '').length;
           totalComments.textContent = commentsWithText;
         } else {
           averageRating.textContent = '0.0';
@@ -216,26 +240,36 @@
         feedbackSection.style.display = 'block';
       });
       
-      submitFeedback.addEventListener('click', function() {
+      submitFeedback.addEventListener('click', async function() {
         playClickSound();
         
         const comment = commentText.value.trim();
-        const now = new Date().toISOString();
         
-        allComments.push({
-          rating: currentRating,
-          text: comment,
-          date: now
-        });
-        
-        localStorage.setItem('allComments', JSON.stringify(allComments));
-        
-        feedbackSection.style.display = 'none';
-        thankYou.style.display = 'block';
-        
-        loadComments();
-        
-        console.log(`Rating: ${currentRating}, Komentar: ${comment}`);
+        try {
+          const { data, error } = await supabase
+            .from('ratings')
+            .insert([
+              { 
+                rating: currentRating, 
+                comment: comment || null 
+              }
+            ]);
+          
+          if (error) {
+            console.error('Error saving rating:', error);
+            alert('Terjadi kesalahan saat menyimpan rating. Silakan coba lagi.');
+            return;
+          }
+          
+          feedbackSection.style.display = 'none';
+          thankYou.style.display = 'block';
+          
+          loadComments();
+          
+        } catch (err) {
+          console.error('Error in submitFeedback:', err);
+          alert('Terjadi kesalahan saat menyimpan rating. Silakan coba lagi.');
+        }
       });
       
       loadComments();
