@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Linktree VenzioVrtx</title>
+  <link rel="stylesheet" href="style2.css" />
+  <!-- Font Awesome untuk icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Konten utama -->
+  <div class="container crt">
+    <div class="avatar animate-fade-up">
+      <img src="icon.png" alt="Avatar" />
+    </div>
+    <h1 class="animate-fade-up" style="animation-delay: 0.2s">KOMENTAR & RATING</h1>
+    <p class="animate-fade-up" style="animation-delay: 0.4s">Beri rating dan lihat komentar dari pengguna lain</p>
+    
+    <div class="stats animate-fade-up" style="animation-delay: 0.6s">
+      <div class="stat">
+        <div class="stat-value" id="averageRating">0.0</div>
+        <div class="stat-label">RATA-RATA</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="totalRatings">0</div>
+        <div class="stat-label">TOTAL</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="totalComments">0</div>
+        <div class="stat-label">KOMENTAR</div>
+      </div>
+    </div>
+    
+    <div class="rating-container animate-fade-up" style="animation-delay: 0.8s">
+      <div class="rating-title">BERI RATING ANDA</div>
+      
+      <div class="rating-scale">
+        <span>1 (Low)</span>
+        <span>10 (High)</span>
+      </div>
+      
+      <div class="rating-numbers">
+        <div class="rating-number" data-value="1">1</div>
+        <div class="rating-number" data-value="2">2</div>
+        <div class="rating-number" data-value="3">3</div>
+        <div class="rating-number" data-value="4">4</div>
+        <div class="rating-number" data-value="5">5</div>
+        <div class="rating-number" data-value="6">6</div>
+        <div class="rating-number" data-value="7">7</div>
+        <div class="rating-number" data-value="8">8</div>
+        <div class="rating-number" data-value="9">9</div>
+        <div class="rating-number" data-value="10">10</div>
+      </div>
+      
+      <div class="rating-label">
+        <span>Bad</span>
+        <span>Good</span>
+      </div>
+      
+      <div class="selected-rating" id="selectedRating">PILIH RATING</div>
+      
+      <button id="submitRating">KIRIM RATING</button>
+      
+      <div class="feedback" id="feedbackSection">
+        <h3>TERIMA KASIH!</h3>
+        <p>Komentar (opsional):</p>
+        <textarea placeholder="Tulis komentar Anda di sini..." id="commentText"></textarea>
+        <button id="submitFeedback">KIRIM KOMENTAR</button>
+      </div>
+      
+      <div class="thank-you" id="thankYou">
+        Terima kasih atas penilaiannya! 🎮
+      </div>
+    </div>
+    
+    <div class="comments-section" id="commentsSection">
+      <h3>KOMENTAR PENGGUNA</h3>
+      <div class="comments-list" id="commentsList">
+        <div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>
+      </div>
+    </div>
+    
+    <div class="links">
+      <a href="index.html" class="animate-fade-up" style="animation-delay: 1.0s">
+        <i class="fas fa-arrow-left"></i> HALAMAN UTAMA
+      </a>
+    </div>
+
+    <footer class="animate-flicker">🕹️ Powered by VenzioVrtx - 2025</footer>
+  </div>
+
+  <!-- Elemen audio untuk efek suara -->
+  <audio id="click-sound" src="klik.ogg" preload="auto"></audio>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const ratingNumbers = document.querySelectorAll('.rating-number');
+      const selectedRating = document.getElementById('selectedRating');
+      const submitButton = document.getElementById('submitRating');
+      const feedbackSection = document.getElementById('feedbackSection');
+      const thankYou = document.getElementById('thankYou');
+      const submitFeedback = document.getElementById('submitFeedback');
+      const commentText = document.getElementById('commentText');
+      const commentsSection = document.getElementById('commentsSection');
+      const commentsList = document.getElementById('commentsList');
+      const clickSound = document.getElementById('click-sound');
+      const averageRating = document.getElementById('averageRating');
+      const totalRatings = document.getElementById('totalRatings');
+      const totalComments = document.getElementById('totalComments');
+      
+      let currentRating = 0;
+      let allComments = JSON.parse(localStorage.getItem('allComments')) || [];
+      
+      function playClickSound() {
+        if (clickSound) {
+          clickSound.currentTime = 0;
+          clickSound.play().catch(err => console.log("Tidak dapat memutar suara: ", err));
+        }
+      }
+      
+      function loadComments() {
+        if (allComments.length > 0) {
+          commentsSection.style.display = 'block';
+          commentsList.innerHTML = '';
+          
+          allComments.sort((a, b) => new Date(b.date) - new Date(a.date));
+          
+          allComments.forEach(comment => {
+            const commentItem = document.createElement('div');
+            commentItem.className = 'comment-item';
+            
+            const commentHeader = document.createElement('div');
+            commentHeader.className = 'comment-header';
+            
+            const commentRating = document.createElement('div');
+            commentRating.className = 'comment-rating';
+            commentRating.textContent = `⭐ ${comment.rating}/10`;
+            
+            const commentDate = document.createElement('div');
+            commentDate.className = 'comment-date';
+            commentDate.textContent = formatDate(comment.date);
+            
+            const commentText = document.createElement('div');
+            commentText.className = 'comment-text';
+            commentText.textContent = comment.text;
+            
+            commentHeader.appendChild(commentRating);
+            commentHeader.appendChild(commentDate);
+            commentItem.appendChild(commentHeader);
+            commentItem.appendChild(commentText);
+            
+            commentsList.appendChild(commentItem);
+          });
+        } else {
+          commentsSection.style.display = 'block';
+          commentsList.innerHTML = '<div class="no-comments">Belum ada komentar. Jadilah yang pertama!</div>';
+        }
+        
+        updateStats();
+      }
+      
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('id-ID', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+      
+      function updateStats() {
+        if (allComments.length > 0) {
+          const totalRating = allComments.reduce((sum, comment) => sum + parseInt(comment.rating), 0);
+          const avgRating = (totalRating / allComments.length).toFixed(1);
+          averageRating.textContent = avgRating;
+          
+          totalRatings.textContent = allComments.length;
+          
+          const commentsWithText = allComments.filter(comment => comment.text.trim() !== '').length;
+          totalComments.textContent = commentsWithText;
+        } else {
+          averageRating.textContent = '0.0';
+          totalRatings.textContent = '0';
+          totalComments.textContent = '0';
+        }
+      }
+      
+      ratingNumbers.forEach(number => {
+        number.addEventListener('click', function() {
+          playClickSound();
+          
+          const value = parseInt(this.getAttribute('data-value'));
+          
+          ratingNumbers.forEach(num => num.classList.remove('active'));
+          
+          this.classList.add('active');
+          
+          currentRating = value;
+          
+          selectedRating.textContent = `RATING: ${value}/10`;
+        });
+      });
+      
+      submitButton.addEventListener('click', function() {
+        if (currentRating === 0) {
+          alert('SILAKAN PILIH RATING TERLEBIH DAHULU!');
+          return;
+        }
+        
+        playClickSound();
+        
+        this.style.display = 'none';
+        feedbackSection.style.display = 'block';
+      });
+      
+      submitFeedback.addEventListener('click', function() {
+        playClickSound();
+        
+        const comment = commentText.value.trim();
+        const now = new Date().toISOString();
+        
+        allComments.push({
+          rating: currentRating,
+          text: comment,
+          date: now
+        });
+        
+        localStorage.setItem('allComments', JSON.stringify(allComments));
+        
+        feedbackSection.style.display = 'none';
+        thankYou.style.display = 'block';
+        
+        loadComments();
+        
+        console.log(`Rating: ${currentRating}, Komentar: ${comment}`);
+      });
+      
+      loadComments();
+      
+      document.querySelectorAll('.links a').forEach(link => {
+        link.addEventListener('click', playClickSound);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0b0b;
+      font-family: 'Press Start 2P', monospace;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 480px;
+      width: 90%;
+      padding: 2rem;
+      border: 3px dashed #ffffff22;
+      background-color: #1a1a1a;
+      box-shadow: 0 0 16px #ffffff10;
+      border-radius: 8px;
+      animation: containerEntry 1s ease forwards;
+    }
+
+    .avatar img {
+      width: 96px;
+      height: 96px;
+      border: 2px solid #ffffff44;
+      border-radius: 8px;
+      image-rendering: pixelated;
+      margin-bottom: 1rem;
+      animation: pixelPop 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #00ffff;
+      text-shadow: 0 0 5px #00ffff;
+    }
+
+    p {
+      font-size: 0.6rem;
+      color: #cccccc;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .rating-container {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 6px;
+      background-color: #2a2a2a;
+    }
+
+    .rating-title {
+      font-size: 0.7rem;
+      margin-bottom: 0.8rem;
+      color: #00ffff;
+      text-transform: uppercase;
+    }
+
+    .rating-scale {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.5rem;
+      color: #cccccc;
+    }
+
+    .rating-numbers {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+
+    .rating-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #cccccc;
+      border: 2px solid #ffffff33;
+      font-size: 0.7rem;
+    }
+
+    .rating-number:hover {
+      transform: scale(1.1);
+      background-color: #3a3a3a;
+      box-shadow: 0 0 8px #00ffff55;
+      color: #ffffff;
+    }
+
+    .rating-number.active {
+      background-color: #00ffff;
+      color: #0b0b0b;
+      transform: scale(1.1);
+      border-color: #00ffff;
+    }
+
+    .rating-label {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.3rem;
+      color: #888888;
+      font-size: 0.5rem;
+    }
+
+    #submitRating {
+      display: block;
+      margin: 0.5rem auto 0;
+      padding: 0.5rem 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #submitRating:hover {
+      background-color: #00ffff;
+      color: #0b0b0b;
+      box-shadow: 0 0 12px #00ffff55;
+    }
+
+    .selected-rating {
+      font-size: 0.6rem;
+      margin-top: 0.8rem;
+      color: #00ffff;
+      min-height: 1.2rem;
+    }
+
+    .feedback {
+      margin-top: 1rem;
+      display: none;
+      border-top: 1px solid #ffffff33;
+      padding-top: 1rem;
+    }
+
+    .feedback h3 {
+      font-size: 0.7rem;
+      margin-bottom: 0.5rem;
+      color: #00ffff;
+    }
+
+    .feedback p {
+      font-size: 0.5rem;
+      margin-bottom: 0.8rem;
+      color: #cccccc;
+    }
+
+    .feedback textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid #ffffff33;
+      border-radius: 4px;
+      resize: vertical;
+      min-height: 60px;
+      margin-bottom: 0.8rem;
+      font-family: 'Press Start 2P', monospace;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      font-size: 0.5rem;
+    }
+
+    #submitFeedback {
+      padding: 0.5rem 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #submitFeedback:hover {
+      background-color: #00ffff;
+      color: #0b0b0b;
+      box-shadow: 0 0 12px #00ffff55;
+    }
+
+    .thank-you {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background-color: #00ffff22;
+      border-radius: 4px;
+      color: #00ffff;
+      font-size: 0.6rem;
+      border: 1px solid #00ffff55;
+    }
+
+    .comments-section {
+      margin-top: 2rem;
+      border-top: 2px solid #ffffff33;
+      padding-top: 1rem;
+      display: none;
+    }
+
+    .comments-section h3 {
+      font-size: 0.7rem;
+      margin-bottom: 1rem;
+      color: #00ffff;
+    }
+
+    .comments-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      padding-right: 0.5rem;
+    }
+
+    .comment-item {
+      background-color: #2a2a2a;
+      border: 1px solid #ffffff33;
+      border-radius: 4px;
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+      text-align: left;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.5rem;
+    }
+
+    .comment-rating {
+      color: #00ffff;
+    }
+
+    .comment-date {
+      color: #888888;
+    }
+
+    .comment-text {
+      font-size: 0.6rem;
+      color: #cccccc;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .no-comments {
+      font-size: 0.6rem;
+      color: #888888;
+      padding: 1rem;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background-color: #2a2a2a;
+      border-radius: 4px;
+      border: 1px solid #ffffff33;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 0.8rem;
+      color: #00ffff;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.5rem;
+      color: #888888;
+    }
+
+    .links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0.5rem 0;
+      padding: 0.8rem 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 6px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .links a i {
+      font-size: 18px;
+      color: #ffffff;
+      transition: transform 0.2s ease;
+    }
+
+    .links a:hover {
+      background-color: #3a3a3a;
+      box-shadow: 0 0 12px #ffffff55;
+      transform: scale(1.03);
+    }
+
+    .links a:hover i {
+      transform: scale(1.2);
+      color: #00ffff;
+    }
+
+    footer {
+      font-size: 0.5rem;
+      color: #888;
+      margin-top: 2rem;
+    }
+
+    .crt {
+      animation: crt-glow 3s infinite alternate;
+      filter: contrast(1.1) brightness(1.05);
+    }
+
+    /* Scrollbar styling */
+    .comments-list::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .comments-list::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+
+    .comments-list::-webkit-scrollbar-thumb {
+      background: #00ffff;
+      border-radius: 3px;
+    }
+
+    /* Animasi */
+    @keyframes pixelPop {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes containerEntry {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+
+    @keyframes crt-glow {
+      0% { box-shadow: 0 0 1px #fff, 0 0 4px #0ff; }
+      100% { box-shadow: 0 0 2px #fff, 0 0 6px #0ff; }
+    }
+
+    /* Utility animasi */
+    .animate-fade-up {
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .animate-flicker {
+      animation: flicker 2s infinite;
+    }

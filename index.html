@@ -17,15 +17,15 @@
     <div class="avatar animate-fade-up">
       <img src="icon.png" alt="Avatar" />
     </div>
-    <h1 class="animate-fade-up" style="animation-delay: 0.2s">@VenzioVrtx</h1>
-    <p class="animate-fade-up" style="animation-delay: 0.4s">🎮 Gamer | Pixel Vibes</p>
+    <h1 class="animate-fade-up" style="animation-delay: 0.2s">@VrtxKacunk</h1>
+    <p class="animate-fade-up" style="animation-delay: 0.4s">Linktree | Pixel Vibes</p>
     
     <div class="links">
       <a id="music-toggle" class="animate-fade-up" style="animation-delay: 1.7s; cursor: pointer;">
         <i class="fas fa-music"></i> Music (Play)
       </a>
 
-      <a href="saweria.html" class="animate-fade-up" style="animation-delay: 2s">
+      <a href="https://saweria.co/VrtxKacunk" class="animate-fade-up" style="animation-delay: 2s">
         <i class="fas fa-globe"></i> Saweria
       </a>
       <a href="Cs.html" class="animate-fade-up" style="animation-delay: 1.2s">
@@ -33,6 +33,9 @@
       </a>
       <a href="code.html" class="animate-fade-up" style="animation-delay: 2s">
         <i class="fab fa-whatsapp"></i> Saluran
+      </a>
+      <a href="rating.html" class="animate-fade-up" style="animation-delay: 1.5s">
+        <i class="fas fa-star"></i> Rating
       </a>
     </div>
 
@@ -46,7 +49,6 @@
   const bgMusic = document.getElementById("bg-music");
   const musicToggle = document.getElementById("music-toggle");
 
-  // Event untuk toggle musik
   musicToggle.addEventListener("click", () => {
     if (bgMusic.paused) {
       bgMusic.play().then(() => {
@@ -59,6 +61,64 @@
       musicToggle.innerHTML = '<i class="fas fa-music"></i> Music (Play)';
     }
   });
+  
+  document.addEventListener('DOMContentLoaded', function() {
+      const ratingNumbers = document.querySelectorAll('.rating-number');
+      const selectedRating = document.getElementById('selectedRating');
+      const submitButton = document.getElementById('submitRating');
+      const feedbackSection = document.getElementById('feedbackSection');
+      const thankYou = document.getElementById('thankYou');
+      const submitFeedback = document.getElementById('submitFeedback');
+      const clickSound = document.getElementById('click-sound');
+      
+      let currentRating = 0;
+      
+      ratingNumbers.forEach(number => {
+        number.addEventListener('click', function() {
+          if (clickSound) {
+            clickSound.currentTime = 0;
+            clickSound.play().catch(err => console.log("Tidak dapat memutar suara: ", err));
+          }
+          
+          const value = parseInt(this.getAttribute('data-value'));
+          
+          ratingNumbers.forEach(num => num.classList.remove('active'));
+          
+          this.classList.add('active');
+          
+          currentRating = value;
+          
+          selectedRating.textContent = `Rating: ${value}/10`;
+        });
+      });
+      
+      submitButton.addEventListener('click', function() {
+        if (currentRating === 0) {
+          alert('Silakan pilih rating terlebih dahulu!');
+          return;
+        }
+        
+        if (clickSound) {
+          clickSound.currentTime = 0;
+          clickSound.play().catch(err => console.log("Tidak dapat memutar suara: ", err));
+        }
+        
+        this.style.display = 'none';
+        feedbackSection.style.display = 'block';
+      });
+      
+      submitFeedback.addEventListener('click', function() {
+        if (clickSound) {
+          clickSound.currentTime = 0;
+          clickSound.play().catch(err => console.log("Tidak dapat memutar suara: ", err));
+        }
+        
+        feedbackSection.style.display = 'none';
+        thankYou.style.display = 'block';
+        
+        console.log(`Rating: ${currentRating}`);
+      });
+    });
 </script>
   <script src="script.js"></script>
 </body>

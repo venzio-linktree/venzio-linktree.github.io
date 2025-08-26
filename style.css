@@ -152,3 +152,159 @@ footer {
   z-index: -10;
   filter: brightness(0.4) contrast(1.05);
 }
+
+    .rating-container {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 6px;
+      background-color: #2a2a2a;
+    }
+    
+    .rating-title {
+      font-size: 0.7rem;
+      margin-bottom: 0.8rem;
+      color: #00ffff;
+      text-transform: uppercase;
+    }
+    
+    .rating-scale {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.5rem;
+      color: #cccccc;
+    }
+    
+    .rating-numbers {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+    
+    .rating-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      background-color: #1a1a1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #cccccc;
+      border: 2px solid #ffffff33;
+      font-size: 0.7rem;
+    }
+    
+    .rating-number:hover {
+      transform: scale(1.1);
+      background-color: #3a3a3a;
+      box-shadow: 0 0 8px #00ffff55;
+      color: #ffffff;
+    }
+    
+    .rating-number.active {
+      background-color: #00ffff;
+      color: #0b0b0b;
+      transform: scale(1.1);
+      border-color: #00ffff;
+    }
+    
+    .rating-label {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.3rem;
+      color: #888888;
+      font-size: 0.5rem;
+    }
+    
+    #submitRating {
+      display: block;
+      margin: 0.5rem auto 0;
+      padding: 0.5rem 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #submitRating:hover {
+      background-color: #00ffff;
+      color: #0b0b0b;
+      box-shadow: 0 0 12px #00ffff55;
+    }
+    
+    .selected-rating {
+      font-size: 0.6rem;
+      margin-top: 0.8rem;
+      color: #00ffff;
+      min-height: 1.2rem;
+    }
+    
+    .feedback {
+      margin-top: 1rem;
+      display: none;
+      border-top: 1px solid #ffffff33;
+      padding-top: 1rem;
+    }
+    
+    .feedback h3 {
+      font-size: 0.7rem;
+      margin-bottom: 0.5rem;
+      color: #00ffff;
+    }
+    
+    .feedback p {
+      font-size: 0.5rem;
+      margin-bottom: 0.8rem;
+      color: #cccccc;
+    }
+    
+    .feedback textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid #ffffff33;
+      border-radius: 4px;
+      resize: vertical;
+      min-height: 60px;
+      margin-bottom: 0.8rem;
+      font-family: 'Press Start 2P', monospace;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      font-size: 0.5rem;
+    }
+    
+    #submitFeedback {
+      padding: 0.5rem 1rem;
+      border: 2px solid #ffffff33;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #submitFeedback:hover {
+      background-color: #00ffff;
+      color: #0b0b0b;
+      box-shadow: 0 0 12px #00ffff55;
+    }
+    
+    .thank-you {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background-color: #00ffff22;
+      border-radius: 4px;
+      color: #00ffff;
+      font-size: 0.6rem;
+      border: 1px solid #00ffff55;
+    }
